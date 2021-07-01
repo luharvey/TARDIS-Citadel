@@ -75,7 +75,7 @@ for i in range(len(paths)):
 	fig = plt.figure(figsize = (14, 6))
 	wl, lum = import_spectrum(paths[i])
 	plt.plot(ref_spec[0], ref_spec[1], color = '#CCCCCC')
-	plt.plot(wl, lum, label = sim_ids[i])
+	plt.plot(wl, lum, label = int(sim_ids[i]), color = 'mediumorchid')
 	plt.legend()
 	plt.xlim(3500, 9000)
 	plt.ylim(0.9*np.amin(ref_spec[1]), 1.1*np.amax(ref_spec[1]))
