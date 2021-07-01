@@ -2,7 +2,7 @@ import sys
 import glob
 import numpy as np
 from shutil import copyfile
-from os import makedirs
+import os
 
 #Text properties
 class text:
@@ -105,13 +105,26 @@ if len(console) == 0:
 	print(text.RED + '\nFAILURE: ' + text.END + 'no console file found at ' + '../console/' + sys.argv[1] + '.txt\nRun: ' + text.GREEN + 'python chameleon_circuit.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
 	exit()
 
-#Reading in the parameter space ranges from the console file
-with open(console[0], 'r') as file:
-	lines = file.readlines()
-	L = mkspan(num_array(extract_brackets(lines[0]).split(sep = ',')))
-	T = mkspan(num_array(extract_brackets(lines[1]).split(sep = ',')))
-	C = extract_brackets(lines[2]).split(sep = ',')
-	V = mkspan(num_array(extract_brackets(lines[3]).split(sep = ',')))
+if os.path.isdir('../reference_spectra') == False:
+	os.makedirs('../reference_spectra')
+if os.path.isdir('../synthetic_spectra') == False:
+	os.makedirs('../synthetic_spectra')
+if os.path.isdir('../blueprints') == False:
+	os.makedirs('../blueprints')
+if os.path.isdir('../csvy') == False:
+	os.makedirs('../csvy')
+
+try:
+	#Reading in the parameter space ranges from the console file
+	with open(console[0], 'r') as file:
+		lines = file.readlines()
+		L = mkspan(num_array(extract_brackets(lines[0]).split(sep = ',')))
+		T = mkspan(num_array(extract_brackets(lines[1]).split(sep = ',')))
+		C = extract_brackets(lines[2]).split(sep = ',')
+		V = mkspan(num_array(extract_brackets(lines[3]).split(sep = ',')))
+except:
+	print(text.RED + '\nFAILURE: ' + text.END + 'failed reading in the console file ../console/' + sys.argv[1] + '.txt\n')
+	exit()
 
 #Calculating all the possible permutations
 combos = [[i, j, k, l] for i in L for j in T for k in V for l in C]
@@ -142,7 +155,7 @@ with open('../blueprints/' + sys.argv[1] + '.bp', 'w') as file:
 		file.write(str(i+1) + ' ' + str(combos[i][0]) + ' ' + str(combos[i][1]) + ' ' + str(combos[i][2]) + ' ' + combos[i][3] + ' \n')
 
 try:
-	makedirs('../ymls/' + sys.argv[1])
+	os.makedirs('../ymls/' + sys.argv[1])
 except:
 	print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../ymls/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
 	exit()
