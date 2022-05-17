@@ -22,9 +22,14 @@ except:
 import multiprocessing as mp
 from functions import run_simulation
 from functools import partial
+import time
 
-folder = sys.argv[1]
-pool = mp.Pool(mp.cpu_count())
-pool.map(partial(run_simulation, folder = folder), paths)
+t0 = time.time()
+pool = mp.Pool(int(2*mp.cpu_count()/3))
+pool.map(partial(run_simulation, folder = sys.argv[1]), paths)
 pool.close()
 pool.join()
+t = time.time()-t0
+
+with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
+	f.write('\nSimulation time: ' + str(int(t)) + 's')
