@@ -2,8 +2,12 @@ import sys
 import glob
 from os import makedirs
 from text import text
+from functions import run_simulation_csv, transpose_csv
+import time
+import multiprocessing as mp
+import shutil
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
 	exit()
 
@@ -16,17 +20,47 @@ if len(paths) == 0:
 try:
 	makedirs('../synthetic_spectra/' + sys.argv[1])
 except:
-	print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../synthetic_spectra/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
-	exit()
+	if '-o' in sys.argv:
+		shutil.rmtree('../synthetic_spectra/' + sys.argv[1])
+		makedirs('../synthetic_spectra/' + sys.argv[1])
+	else:	
+		print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../synthetic_spectra/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
+		exit()
 
-import tardis
+if '-s' in sys.argv:
+	t0 = time.time()
+	for i in paths:
+		run_simulation_csv(i, sys.argv[1])
+		#name = i.split(sep = '/')[-1].split(sep = '.')[0]
+		#
+		#sim = tardis.run_tardis(i)
+		#spec = sim.runner.spectrum_virtual
+		#
+		#with open('../synthetic_spectra/' + sys.argv[1] + '/' + name + '.txt', 'w') as file:
+		#	for j in range(len(spec.wavelength.value)):
+		#		file.write(str(spec.wavelength.value[j]) + ' ' + str(spec.luminosity_density_lambda.value[j]) + ' \n')
+	t = time.time()-t0
 
-for i in paths:
-	name = i.split(sep = '/')[-1].split(sep = '.')[0]
+	with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
+		f.write('\nSimulation time (singles ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
 
-	sim = tardis.run_tardis(i)
-	spec = sim.runner.spectrum_virtual
+	transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
 
-	with open('../synthetic_spectra/' + sys.argv[1] + '/' + name + '.txt', 'w') as file:
-		for j in range(len(spec.wavelength.value)):
-			file.write(str(spec.wavelength.value[j]) + ' ' + str(spec.luminosity_density_lambda.value[j]) + ' \n')
+	shutil.rmtree('../ymls/' + sys.argv[1])
+
+else:
+	from functools import partial
+	
+	t0 = time.time()
+	pool = mp.Pool(int(2*mp.cpu_count()/3))
+	pool.map(partial(run_simulation_csv, folder = sys.argv[1]), paths)
+	pool.close()
+	pool.join()
+	t = time.time()-t0
+	
+	with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
+		f.write('\nSimulation time (multiprocess ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
+	
+	transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
+
+	shutil.rmtree('../ymls/' + sys.argv[1])
