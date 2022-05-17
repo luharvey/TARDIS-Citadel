@@ -9,4 +9,4 @@ Scripts and directory structure to run bulk TARDIS simulations to fine tune para
 
 4.) Run: 'python geronimo.py SIMULATION_NAME' to run the input files as TARDIS simulations, sending the output spectra to the synthetic_spectra directory.
 
-5.) Run: 'python display.py SIMULATION_NAME TARGET_NAME e/p' to overplot the synthesised spectra with the reference spectra to be placed in the reference_spectra directory. The e or p flag indicates whether to use the early or peak reference spectrum.
+In lieu of running geronimo.py, chose to run multi_geronimo.py with which the simulations will be run with a multiprocessing pool across the number of cores on the system.
