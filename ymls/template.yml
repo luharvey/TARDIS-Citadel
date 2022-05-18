@@ -25,12 +25,12 @@ montecarlo:
 
   convergence_strategy:
     type: damped
-    damping_constant: 0.0
+    damping_constant: 0.7
     threshold: 0.05
     fraction: 0.8
     hold_iterations: 3
     t_inner:
-      damping_constant: 0.0
+      damping_constant: 0.7
 
 spectrum:
   start: 500 angstrom
