@@ -34,7 +34,7 @@ def run_simulation_csv(path, folder):
 
 	with open('../synthetic_spectra/' + folder + '/temp/' + name + '.csv', 'w') as f:
 		f.write(name + '\n')
-		for l in spec.luminosity_density_lambda:
+		for l in spec.luminosity_density_lambda.value:
 			f.write(str(l) + '\n')
 
 	#if exists(path):
