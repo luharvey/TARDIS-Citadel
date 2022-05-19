@@ -53,7 +53,8 @@ else:
 	from functools import partial
 	
 	#t0 = time.time()
-	pool = mp.Pool(int(2*mp.cpu_count()/3))
+	#pool = mp.Pool(int(2*mp.cpu_count()/3))
+	pool = mp.Pool(int(mp.cpu_count()/2))
 	pool.map(partial(run_simulation_csv, folder = sys.argv[1]), paths)
 	pool.close()
 	pool.join()
