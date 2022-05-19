@@ -15,7 +15,7 @@ def run_simulation(path, folder):
 
 	return
 
-def run_simulation_csv(path, folder, name):
+def run_simulation_csv(path, folder):
 	name = path.split(sep = '/')[-1][:-4]
 
 	sim = tardis.run_tardis(path, show_convergence_plots = False)
