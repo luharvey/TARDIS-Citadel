@@ -76,8 +76,7 @@ for p in spec_paths:
 
 transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
 shutil.rmtree('../ymls/' + sys.argv[1])
-
-
+shutil.rmtree('../synthetic/' + sys.argv[1] + '/temp')
 
 #Recording the time
 t = time.time()-t0
