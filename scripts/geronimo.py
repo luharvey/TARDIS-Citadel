@@ -20,13 +20,18 @@ if len(paths) == 0:
 try:
 	makedirs('../synthetic_spectra/' + sys.argv[1])
 except:
+	#Overwriting the current synthetic_spectra directory for the simulation
 	if '-o' in sys.argv:
-		shutil.rmtree('../synthetic_spectra/' + sys.argv[1])
-		makedirs('../synthetic_spectra/' + sys.argv[1])
+		try:
+			shutil.rmtree('../synthetic_spectra/' + sys.argv[1])
+			makedirs('../synthetic_spectra/' + sys.argv[1])
+		except:
+			pass
 	else:	
 		print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../synthetic_spectra/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
 		exit()
 
+#Running the sims in a single process
 if '-s' in sys.argv:
 	t0 = time.time()
 	for i in paths:
