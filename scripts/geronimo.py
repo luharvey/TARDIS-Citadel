@@ -4,7 +4,7 @@ from os import makedirs
 from text import text
 from functions import run_simulation_csv, transpose_csv
 import time
-import multiprocessing as mp
+import multiprocess as mp
 import shutil
 from pandas import read_csv
 
@@ -77,21 +77,12 @@ for p in spec_paths:
 
 transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
 shutil.rmtree('../ymls/' + sys.argv[1])
-shutil.rmtree('../synthetic/' + sys.argv[1] + '/temp')
+shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
 
 #Recording the time
 t = time.time()-t0
 with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
 	f.write('\nSimulation time (multiprocess ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
-
-
-
-
-
-
-
-
-
 
 
 
