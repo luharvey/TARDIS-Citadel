@@ -66,7 +66,7 @@ for p in spec_paths:
 	num = p.split(sep = '/')[-1][:-4]
 	d = read_csv(p)
 
-	with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv') as f:
+	with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv', 'a') as f:
 		f.write(str(num))
 		for j in d['lum']:
 			f.write(',' + str(j))
