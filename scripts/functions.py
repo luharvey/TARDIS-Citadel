@@ -22,7 +22,6 @@ def run_simulation_csv(path, folder):
 	spec = sim.runner.spectrum_virtual
 
 	path = '../synthetic_spectra/' + folder + '/spectra.csv'
-	makedirs('../synthetic_spectra/' + folder + '/temp')
 
 	if exists(path) == False:
 		with open(path, 'w') as file:
@@ -30,6 +29,8 @@ def run_simulation_csv(path, folder):
 			for j in range(len(spec.wavelength.value)):
 				file.write(',' + str(spec.wavelength.value[j]))
 			file.write('\n')
+
+		makedirs('../synthetic_spectra/' + folder + '/temp')
 
 	with open('../synthetic_spectra/' + folder + '/temp/' + name + '.csv', 'w') as f:
 		f.write(name + '\n')
