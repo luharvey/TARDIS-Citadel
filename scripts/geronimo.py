@@ -7,7 +7,7 @@ import time
 import multiprocess as mp
 import shutil
 from pandas import read_csv
-from functools import partial
+#from functools import partial
 from numpy import ceil
 
 ncut = mp.cpu_count()
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 			p = []
 
 			for path in k:
-				p.append(Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
+				p.append(mp.Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
 				p[-1].start()
 
 			for process in p:
