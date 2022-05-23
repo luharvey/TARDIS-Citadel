@@ -7,6 +7,7 @@ import time
 import multiprocess as mp
 import shutil
 from pandas import read_csv
+from functools import partial
 
 if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
@@ -34,55 +35,42 @@ except:
 
 t0 = time.time()
 
-#Running the sims in a single process
-if '-s' in sys.argv:
-	#t0 = time.time()
-	for i in paths:
-		run_simulation_csv(i, sys.argv[1])
-		#name = i.split(sep = '/')[-1].split(sep = '.')[0]
-		#
-		#sim = tardis.run_tardis(i)
-		#spec = sim.runner.spectrum_virtual
-		#
-		#with open('../synthetic_spectra/' + sys.argv[1] + '/' + name + '.txt', 'w') as file:
-		#	for j in range(len(spec.wavelength.value)):
-		#		file.write(str(spec.wavelength.value[j]) + ' ' + str(spec.luminosity_density_lambda.value[j]) + ' \n')
-	#t = time.time()-t0
+if __name__ == '__main__':
 
-else:
-	from functools import partial
+	#Running the sims in a single process
+	if '-s' in sys.argv:
+		for i in paths:
+			run_simulation_csv(i, sys.argv[1])
 	
-	#t0 = time.time()
-	#pool = mp.Pool(int(2*mp.cpu_count()/3))
-	pool = mp.Pool(int(mp.cpu_count()/2))
-	pool.map(partial(run_simulation_csv, folder = sys.argv[1]), paths)
-	pool.close()
-	pool.join()
-	#t = time.time()-t0
-
-
-#Combining all the files into the one spectra.csv
-spec_paths = glob.glob('../synthetic_spectra/' + sys.argv[1] + '/temp/*.csv')
-for p in spec_paths:
-	num = p.split(sep = '/')[-1][:-4]
-	d = read_csv(p)
-
-	with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv', 'a') as f:
-		f.write(str(num))
-		for j in d['lum']:
-			f.write(',' + str(j))
-
-		f.write('\n')
-
-
-transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
-shutil.rmtree('../ymls/' + sys.argv[1])
-shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
-
-#Recording the time
-t = time.time()-t0
-with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
-	f.write('\nSimulation time (multiprocess ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
+	else:
+		pool = mp.Pool(int(mp.cpu_count()/2))
+		pool.map(partial(run_simulation_csv, folder = sys.argv[1]), paths)
+		pool.close()
+		pool.join()
+	
+	
+	#Combining all the files into the one spectra.csv
+	spec_paths = glob.glob('../synthetic_spectra/' + sys.argv[1] + '/temp/*.csv')
+	for p in spec_paths:
+		num = p.split(sep = '/')[-1][:-4]
+		d = read_csv(p)
+	
+		with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv', 'a') as f:
+			f.write(str(num))
+			for j in d['lum']:
+				f.write(',' + str(j))
+	
+			f.write('\n')
+	
+	
+	transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
+	shutil.rmtree('../ymls/' + sys.argv[1])
+	shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
+	
+	#Recording the time
+	t = time.time()-t0
+	with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
+		f.write('\nSimulation time (multiprocess ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
 
 
 
