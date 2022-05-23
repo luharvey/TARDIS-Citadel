@@ -39,7 +39,7 @@ except:
 t0 = time.time()
 
 split = []
-for n in range(int(ceil(len(p)/ncut))):
+for n in range(int(ceil(len(paths)/ncut))):
 	split.append(paths[n*ncut:(n+1)*ncut])
 
 if __name__ == '__main__':
