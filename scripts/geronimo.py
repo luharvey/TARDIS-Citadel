@@ -8,6 +8,9 @@ import multiprocess as mp
 import shutil
 from pandas import read_csv
 from functools import partial
+from numpy import ceil
+
+ncut = 50
 
 if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
@@ -35,6 +38,10 @@ except:
 
 t0 = time.time()
 
+split = []
+for n in range(int(ceil(len(p)/ncut))):
+	split.append(paths[n*ncut:(n+1)*ncut])
+
 if __name__ == '__main__':
 
 	#Running the sims in a single process
@@ -43,10 +50,11 @@ if __name__ == '__main__':
 			run_simulation_csv(i, sys.argv[1])
 	
 	else:
-		pool = mp.Pool(int(mp.cpu_count()/2))
-		pool.map(partial(run_simulation_csv, folder = sys.argv[1]), paths)
-		pool.close()
-		pool.join()
+		for k in split:
+			pool = mp.Pool(int(mp.cpu_count()/2))
+			pool.map(partial(run_simulation_csv, folder = sys.argv[1]), k)
+			pool.close()
+			pool.join()
 	
 	
 	#Combining all the files into the one spectra.csv
