@@ -10,7 +10,7 @@ from pandas import read_csv
 from functools import partial
 from numpy import ceil
 
-ncut = 40
+ncut = mp.cpu_count()
 
 if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
@@ -51,10 +51,14 @@ if __name__ == '__main__':
 	
 	else:
 		for k in split:
-			pool = mp.Pool(int(mp.cpu_count()/2))
-			pool.map(partial(run_simulation_csv, folder = sys.argv[1]), k)
-			pool.close()
-			pool.join()
+			p = []
+
+			for path in k:
+				p.append(Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
+				p[-1].start()
+
+			for process in p:
+				process.join()
 	
 	
 	#Combining all the files into the one spectra.csv
