@@ -10,7 +10,7 @@ from pandas import read_csv
 from functools import partial
 from numpy import ceil
 
-ncut = 50
+ncut = 40
 
 if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
