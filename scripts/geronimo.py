@@ -2,7 +2,7 @@ import sys
 import glob
 from os import makedirs
 from text import text
-from functions import run_simulation_csv, transpose_csv
+from functions import run_simulation_csv, transpose_csv, where
 import time
 import multiprocess as mp
 import shutil
@@ -10,7 +10,7 @@ from pandas import read_csv
 #from functools import partial
 from numpy import ceil
 
-ncut = mp.cpu_count()
+
 
 if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
@@ -35,6 +35,11 @@ except:
 	else:	
 		print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../synthetic_spectra/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
 		exit()
+
+if '-n' in sys.argv:
+	ncut = int(sys.argv[where('-n', sys.argv) + 1])
+else:
+	ncut = mp.cpu_count()
 
 t0 = time.time()
 

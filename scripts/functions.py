@@ -15,6 +15,13 @@ def run_simulation(path, folder):
 
 	return
 
+def where(target, array):
+	for i in range(len(array)):
+		if target == array[i]:
+			return i 
+
+	return
+
 def run_simulation_csv(path, folder):
 	name = path.split(sep = '/')[-1][:-4]
 
