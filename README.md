@@ -9,7 +9,10 @@ Scripts and directory structure to run bulk TARDIS simulations to fine tune para
 
 4.) Run: 'python geronimo.py NAME' to run the input files as TARDIS simulations, sending the output spectra to a single csv file in the synthetic_spectra directory. (../synthetic_spectra/NAME/spectra.csv)
 
+
+
 Flags:
+
 -s: run the simulations without the aid of multiprocessing
 
 -o: overwrite the existing synthetic spectra folder corresponding to the same name
