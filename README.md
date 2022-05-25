@@ -11,7 +11,13 @@ Scripts and directory structure to run bulk TARDIS simulations to fine tune para
 
 Flags:
 -s: run the simulations without the aid of multiprocessing
+
 -o: overwrite the existing synthetic spectra folder corresponding to the same name
+
+-n: specify the size of groups to split the simulations into (set to number of CPUs by default)
+
+
+
 
 Dependancies:
 TARDIS and the dependancies therein. Advised to create a conda environment from the environment definition file offered in the TARDIS repository: https://github.com/tardis-sn/tardis
