@@ -83,7 +83,7 @@ def new_yml(n, l, t, c, template = 'template.yml'):
 		for h in lines:
 			f.write(h)
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
 	print('\nRun: ' + text.GREEN + 'python chameleon_circuit.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
 	exit()
 
