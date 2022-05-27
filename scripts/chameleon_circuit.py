@@ -43,8 +43,8 @@ def change_inner_vel(file, v):
 		for j in lines:
 			f.write(j)
 
-def new_yml(n, l, t, c):
-	copyfile('../ymls/template.yml', '../ymls/' + sys.argv[1] + '/' + str(n) + '.yml')
+def new_yml(n, l, t, c, template = 'template.yml'):
+	copyfile('../ymls/' + template, '../ymls/' + sys.argv[1] + '/' + str(n) + '.yml')
 	with open('../ymls/' + sys.argv[1] + '/' + str(n) + '.yml', 'r') as f:
 		lines = f.readlines()
 
@@ -121,7 +121,7 @@ for i in range(len(combos)):
 	combos[i][1] = round(combos[i][1], 1)
 	combos[i][2] = int(round(combos[i][2], 0))
 
-#Extracting the directoryies from the csvy paths
+#Extracting the directories from the csvy paths
 C_dirs = []
 for k in range(len(C)):
 	C_split = C[k].split(sep = '/')
@@ -148,11 +148,16 @@ except:
 	print(text.RED + '\nFAILURE: ' + text.END + 'there already exists a directory ' + text.BOLD + '../ymls/' + sys.argv[1] + text.END + '\nOperation aborted to prevent overwriting\n')
 	exit()
 
+if '-h' in sys.argv:
+	template_file = 'template_high_res.yml'
+else:
+	template_file = 'template.yml'
+
 for i in range(len(combos)):
 	#Select the correct csvy directory
 	for k in range(len(C_dirs)):
 		if C_dirs[k] in combos[i][3]:
 			index = k
-	new_yml(i+1, combos[i][0], combos[i][1], '../' + C_dirs[index] + str(combos[i][2]) + '.csvy')
+	new_yml(i+1, combos[i][0], combos[i][1], '../' + C_dirs[index] + str(combos[i][2]) + '.csvy', template = template_file)
 
 print(text.GREEN + '\nSUCCESS: ' + text.END + 'csvy and yml files constructed\nNow run: ' + text.GREEN + 'python geronimo.py ' + text.RED + text.BOLD + 'SIMULATION_NAME\n' + text.END)
