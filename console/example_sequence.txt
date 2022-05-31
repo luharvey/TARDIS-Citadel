@@ -1,0 +1,4 @@
+luminosity_requested: [lum1,lum2,lum3,lum4,...] 
+time_explosion: [time1,time2,time3,time4,...] 
+csvy_model: [../csvy/path_to_csvy1,../csvy/path_to_csvy2,...]
+v_inner: [velocity1,velocity2,velocity3,velocity4,...] 
