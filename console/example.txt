@@ -1,3 +1,4 @@
+console_format: citadel
 luminosity_requested: [low,high,num] 
 time_explosion: [low,high,num] 
 csvy_model: [../csvy/path_to_csvy1,../csvy/path_to_csvy2, ...] 

@@ -102,24 +102,33 @@ if os.path.isdir('../blueprints') == False:
 if os.path.isdir('../csvy') == False:
 	os.makedirs('../csvy')
 
+sequence = False
+
 try:
 	#Reading in the parameter space ranges from the console file
 	with open(console[0], 'r') as file:
 		lines = file.readlines()
-		L = mkspan(num_array(extract_brackets(lines[0]).split(sep = ',')))
-		T = mkspan(num_array(extract_brackets(lines[1]).split(sep = ',')))
-		C = extract_brackets(lines[2]).split(sep = ',')
-		V = mkspan(num_array(extract_brackets(lines[3]).split(sep = ',')))
+		if lines[0].split(sep = ': ')[-1] == 'citadel\n': 
+			L = mkspan(num_array(extract_brackets(lines[1]).split(sep = ',')))
+			T = mkspan(num_array(extract_brackets(lines[2]).split(sep = ',')))
+			C = extract_brackets(lines[3]).split(sep = ',')
+			V = mkspan(num_array(extract_brackets(lines[4]).split(sep = ',')))
+		elif lines[0].split(sep = ': ')[-1] == 'citadel_sequence\n':
+			sequence = True
+			L = num_array(extract_brackets(lines[1]).split(sep = ','))
+			T = num_array(extract_brackets(lines[2]).split(sep = ','))
+			C = extract_brackets(lines[3]).split(sep = ',')
+			V = num_array(extract_brackets(lines[4]).split(sep = ','))
+
+			print(V)
+
+		else:
+			print(text.RED + '\nFAILURE: ' + text.END + 'console file is missing the console_fomat header\n')
+			exit()
+
 except:
 	print(text.RED + '\nFAILURE: ' + text.END + 'failed reading in the console file ../console/' + sys.argv[1] + '.txt\n')
 	exit()
-
-#Calculating all the possible permutations
-combos = [[i, j, k, l] for i in L for j in T for k in V for l in C]
-for i in range(len(combos)):
-	combos[i][0] = round(combos[i][0], 2)
-	combos[i][1] = round(combos[i][1], 1)
-	combos[i][2] = int(round(combos[i][2], 0))
 
 #Extracting the directories from the csvy paths
 C_dirs = []
@@ -136,12 +145,22 @@ for i in V:
 		copyfile(C[k], C_dirs[k] + str(int(round(i, 0))) + '.csvy')
 		change_inner_vel(C_dirs[k] + str(int(round(i, 0))) + '.csvy', int(round(i, 0)))
 
+#Calculating all the possible permutations
+if sequence:
+	combos = [[L[i], T[i], V[i], l] for i in range(len(L)) for l in C]
+else:
+	combos = [[i, j, k, l] for i in L for j in T for k in V for l in C]
+
+for i in range(len(combos)):
+	combos[i][0] = round(combos[i][0], 2)
+	combos[i][1] = round(combos[i][1], 1)
+	combos[i][2] = int(round(combos[i][2], 0))
+
 #Writing the blueprint file
 with open('../blueprints/' + sys.argv[1] + '.bp', 'w') as file:
 	file.write('simulation_number luminosity_requested time_explosion v_inner csvy \n')
 	for i in range(len(combos)):
 		file.write(str(i+1) + ' ' + str(combos[i][0]) + ' ' + str(combos[i][1]) + ' ' + str(combos[i][2]) + ' ' + combos[i][3] + ' \n')
-
 try:
 	os.makedirs('../ymls/' + sys.argv[1])
 except:
