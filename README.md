@@ -19,6 +19,7 @@ Flags:
 
 -n: specify the size of groups to split the simulations into (set to number of CPUs by default)
 
+-h: (chameleon_circuit.py flag) creates yml files with 10 times the final photon packet count for smooth simulations
 
 
 
