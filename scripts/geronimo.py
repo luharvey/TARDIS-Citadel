@@ -82,7 +82,7 @@ if __name__ == '__main__':
 	
 	transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
 	shutil.rmtree('../ymls/' + sys.argv[1])
-	shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
+	#shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
 	
 	#Recording the time
 	t = time.time()-t0
