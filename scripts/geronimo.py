@@ -2,7 +2,7 @@ import sys
 import glob
 from os import makedirs
 from text import text
-from functions import run_simulation_csv, transpose_csv, where
+from functions import run_simulation_csv, transpose_csv, where, run_simulation_extract
 import time
 import multiprocess as mp
 import shutil
@@ -39,7 +39,7 @@ except:
 if '-n' in sys.argv:
 	ncut = int(sys.argv[where('-n', sys.argv) + 1])
 else:
-	ncut = mp.cpu_count()
+	ncut = int(mp.cpu_count()/2)
 
 t0 = time.time()
 
@@ -59,7 +59,8 @@ if __name__ == '__main__':
 			p = []
 
 			for path in k:
-				p.append(mp.Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
+				#p.append(mp.Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
+				p.append(mp.Process(target = run_simulation_extract, args = (path,sys.argv[1],)))
 				p[-1].start()
 
 			for process in p:
@@ -80,7 +81,7 @@ if __name__ == '__main__':
 			f.write('\n')
 	
 	
-	transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
+	#transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
 	shutil.rmtree('../ymls/' + sys.argv[1])
 	#shutil.rmtree('../synthetic_spectra/' + sys.argv[1] + '/temp')
 	
