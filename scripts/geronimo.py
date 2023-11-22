@@ -68,17 +68,17 @@ if __name__ == '__main__':
 	
 	
 	#Combining all the files into the one spectra.csv
-	spec_paths = glob.glob('../synthetic_spectra/' + sys.argv[1] + '/temp/*.csv')
-	for p in spec_paths:
-		num = p.split(sep = '/')[-1][:-4]
-		d = read_csv(p)
-	
-		with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv', 'a') as f:
-			f.write(str(num))
-			for j in d['lum']:
-				f.write(',' + str(j))
-	
-			f.write('\n')
+	#spec_paths = glob.glob('../synthetic_spectra/' + sys.argv[1] + '/temp/*.csv')
+	#for p in spec_paths:
+	#	num = p.split(sep = '/')[-1][:-4]
+	#	d = read_csv(p)
+	#
+	#	with open('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv', 'a') as f:
+	#		f.write(str(num))
+	#		for j in d['lum']:
+	#			f.write(',' + str(j))
+	#
+	#		f.write('\n')
 	
 	
 	#transpose_csv('../synthetic_spectra/' + sys.argv[1] + '/spectra.csv')
@@ -89,6 +89,3 @@ if __name__ == '__main__':
 	t = time.time()-t0
 	with open('../blueprints/' + sys.argv[1] + '.bp', 'a') as f:
 		f.write('\nSimulation time (multiprocess ' + str(mp.cpu_count()) + 'CPU): ' + str(int(t)) + 's')
-
-
-
