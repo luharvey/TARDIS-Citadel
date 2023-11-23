@@ -47,39 +47,22 @@ split = []
 for n in range(int(ceil(len(paths)/ncut))):
 	split.append(paths[n*ncut:(n+1)*ncut])
 
-
-if __name__ == '__main__':
-
-	for k in split:
-		p = []
-		for path in k:
-			p.append(mp.Process(target = run_simulation, args = (path,command_line_inputs[0],)))
-			p[-1].start()
-		for process in p:
-			process.join()
-
-
-
-
-
 if __name__ == '__main__':
 
 	#Running the sims in a single process
-	if '-s' in sys.argv:
-		for i in paths:
-			run_simulation_csv(i, sys.argv[1])
+	#if '-s' in sys.argv:
+	#	for i in paths:
+	#		run_simulation_csv(i, sys.argv[1])
 	
-	else:
-		for k in split:
-			p = []
-
-			for path in k:
-				#p.append(mp.Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
-				p.append(mp.Process(target = run_simulation_extract, args = (path,sys.argv[1],)))
-				p[-1].start()
-
-			for process in p:
-				process.join()
+	#else:
+	for k in split:
+		p = []
+		for path in k:
+			#p.append(mp.Process(target = run_simulation_csv, args = (path,sys.argv[1],)))
+			p.append(mp.Process(target = run_simulation_extract, args = (path,sys.argv[1],)))
+			p[-1].start()
+		for process in p:
+			process.join()
 	
 	
 	#Combining all the files into the one spectra.csv
