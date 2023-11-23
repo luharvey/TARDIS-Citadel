@@ -47,6 +47,21 @@ split = []
 for n in range(int(ceil(len(paths)/ncut))):
 	split.append(paths[n*ncut:(n+1)*ncut])
 
+
+if __name__ == '__main__':
+
+	for k in split:
+		p = []
+		for path in k:
+			p.append(mp.Process(target = run_simulation, args = (path,command_line_inputs[0],)))
+			p[-1].start()
+		for process in p:
+			process.join()
+
+
+
+
+
 if __name__ == '__main__':
 
 	#Running the sims in a single process

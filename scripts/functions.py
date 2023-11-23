@@ -13,14 +13,14 @@ def run_simulation(path, folder):
 		for j in range(len(spec.wavelength.value)):
 			file.write(str(spec.wavelength.value[j]) + ' ' + str(spec.luminosity_density_lambda.value[j]) + ' \n')
 
-	return
+	#return
 
 def where(target, array):
 	for i in range(len(array)):
 		if target == array[i]:
 			return i 
 
-	return
+	#return
 
 def run_simulation_csv(path, folder):
 	name = path.split(sep = '/')[-1][:-4]
@@ -44,7 +44,7 @@ def run_simulation_csv(path, folder):
 		for l in spec.luminosity_density_lambda.value:
 			f.write(str(l) + '\n')
 
-	return
+	#return
 
 def extract(sim, output_path):
     spectrum = sim.runner.spectrum_virtual
@@ -114,10 +114,10 @@ def run_simulation_extract(path, folder):
 
 	extract(sim, f'{directory}/{name}')
 
-	return
+	#return
 
 def transpose_csv(path):
 	df = pd.read_csv(path, index_col = 0, header = None).T
 	df.to_csv(path, index = 0)
 
-	return
+	#return
