@@ -58,7 +58,7 @@ def extract(sim, output_path):
 	wavelength, luminosity = [], []
 	for i in range(len(wl0)):
 		if 3000 <= wl0[i] <= 12000:
-			avelength.append(wl0[i])
+			wavelength.append(wl0[i])
 			uminosity.append(lum0[i])
 		elif wl0[i] > 12000:
 			break
