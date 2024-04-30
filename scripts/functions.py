@@ -2,6 +2,7 @@ import tardis
 from os.path import exists
 from os import makedirs
 import pandas as pd
+from datetime import datetime
 
 def run_simulation(path, folder):
 	name = path.split(sep = '/')[-1].split(sep = '.')[0]
@@ -63,8 +64,11 @@ def extract(sim, output_path):
 		elif wl0[i] > 12000:
 			break
 
+	t = datetime.now()
+	finish_time = t.strftime("%d-%m-%Y_%H-%M-%S")
+
 	#Writing to output files
-	pd.DataFrame({'wavelength':wavelength, 'luminosity':luminosity}).to_csv(f'{output_path}_spectrum.csv', index = 0)
+	pd.DataFrame({'wavelength':wavelength, 'luminosity':luminosity}).to_csv(f'{output_path}_spectrum_{finish_time}.csv', index = 0)
 
 def run_simulation_extract(path, folder):
 	name = path.split(sep = '/')[-1][:-4]
