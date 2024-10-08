@@ -26,3 +26,7 @@ Flags:
 Dependancies:
 TARDIS and the dependancies therein. Advised to create a conda environment from the environment definition file offered in the TARDIS repository: https://github.com/tardis-sn/tardis
 Multiprocessing (install with pip): 'pip install multiprocess'
+
+
+DISCLAIMER:
+This package is no longer maintained and may require updating to function with more recent releases of TARDIS.
